@@ -26,4 +26,4 @@ langchain-openai
 # Uncomment if you plan to use Google Generative AI (Gemini) models with CrewAI/LangChain
 langchain-google-genai
 
-pysqlite3
+pysqlite3-binary
