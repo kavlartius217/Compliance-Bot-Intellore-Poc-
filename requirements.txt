@@ -1,7 +1,6 @@
-streamlit
-pandas
-crewai>
-crewai-tools
-groq
-pysqlite3-binary
-setuptools>=65.5.0
+streamlit==1.31.0
+pandas==2.1.4
+crewai==0.28.8
+crewai_tools==0.1.6
+groq==0.4.2
+python-dateutil==2.8.2
