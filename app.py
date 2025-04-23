@@ -69,6 +69,9 @@ with st.sidebar:
         if serper_api_key:
             os.environ["SERPER_API_KEY"] = serper_api_key
             st.success("Serper API key saved!")
+        if serper_api_key:
+            os.environ["GROQ_API_KEY"] = groq_api_key
+            st.success("Groq API key saved!")
         
     st.markdown("---")
     st.markdown("### About")
