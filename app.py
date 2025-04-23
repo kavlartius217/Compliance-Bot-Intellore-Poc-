@@ -189,7 +189,6 @@ compliance_lookup_task = Task(
     ),
     agent=compliance_agent
 )
-            )
             
             # Create and run crew
             crew = Crew(
