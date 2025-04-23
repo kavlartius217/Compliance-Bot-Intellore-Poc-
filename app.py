@@ -130,7 +130,7 @@ if submitted:
             # Set up LLM
             llm_deepseek = LLM(
                 model="groq/deepseek-r1-distill-llama-70b",
-                temperature=0
+                temperature=0.3
             )
             if "GROQ_API_KEY" in os.environ and os.environ["GROQ_API_KEY"]:
                 llm_deepseek.api_key = os.environ["GROQ_API_KEY"]
@@ -164,12 +164,16 @@ if submitted:
                     "Generate a well-structured **Markdown (.md)** table that includes a full compliance summary for the company. "
                     "You must not just list applicable compliances — also show inapplicable, missing, or error-prone cases to help the user correct them.\n\n"
 
-                    "**The markdown table must follow this format exactly:**\n"
-                    "```\n"
-                    "| Compliance Area | Section | Form | Applicable | Trigger or Reason | Legal Deadline | Due Date | Status/Error | Source |\n"
-                    "| --- | --- | --- | --- | --- | --- | --- | --- | --- |\n"
-                    "| CSR Committee | 135(1) | N/A | ✅ | Net Profit > ₹5 Cr | within 180 days of FY end | 30-09-2025 | Compliant | https://www.mca.gov.in/... |\n"
-                    "```\n\n"
+                    "**The markdown table must contain the following columns:**\n"
+                    "- Compliance Area (e.g., CSR Committee, Secretarial Audit)\n"
+                    "- Section (e.g., 135(1), 204(1))\n"
+                    "- Form (if applicable, e.g., MR-3, MGT-8)\n"
+                    "- Applicable (✅/❌)\n"
+                    "- Trigger or Reason (e.g., 'Net Profit > ₹5 Cr', or 'Does not meet XBRL condition')\n"
+                    "- Legal Deadline (e.g., 'within 180 days of financial year end')\n"
+                    "- Due Date (calculated from {date})\n"
+                    "- Status/Error (e.g., 'Compliant', 'Missing input: Paid-up Capital', 'Exempted due to Small Company')\n"
+                    "- Source (URL from mca.gov.in)\n\n"
 
                     "**You must handle the following cases:**\n"
                     "- ✅ Clearly applicable compliances with due dates.\n"
@@ -178,13 +182,12 @@ if submitted:
                     "- ❗ Any edge cases, exemptions (e.g., OPC, Section 8 Company), or potential legal risks.\n\n"
 
                     "🛑 **Important Rules:**\n"
-                    "- Your output MUST begin with a properly formatted markdown table as shown above.\n"
                     "- Use only content found via 'site:mca.gov.in' search queries.\n"
                     "- The table must be a clean, valid markdown table viewable on GitHub.\n"
                     "- For each entry, provide a real MCA.gov.in URL as the source.\n"
                     "- Do not guess thresholds — look them up.\n"
                     "- Ensure all legal deadlines are calculated from the current date ({date}).\n"
-                    "- Do not omit entries — even inapplicable ones must be recorded.\n"
+                    "- Do not omit entries — even inapplicable ones must be recorded."
                     "- The report generated should be beautifully presented."
                 ),
                 agent=compliance_agent
