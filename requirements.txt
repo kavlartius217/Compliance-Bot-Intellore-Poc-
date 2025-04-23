@@ -3,3 +3,4 @@ pandas
 crewai
 crewai-tools
 groq
+pysqlite3-binary
