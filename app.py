@@ -60,6 +60,7 @@ with st.sidebar:
     st.header("API Configuration")
     openai_api_key = st.text_input("OpenAI API Key", type="password", value=os.environ.get("OPENAI_API_KEY", ""))
     serper_api_key = st.text_input("Serper API Key", type="password", value=os.environ.get("SERPER_API_KEY", ""))
+    groq_api_key = st.text_input("GROQ API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
     
     if st.button("Save API Keys"):
         if openai_api_key:
@@ -68,6 +69,9 @@ with st.sidebar:
         if serper_api_key:
             os.environ["SERPER_API_KEY"] = serper_api_key
             st.success("Serper API key saved!")
+        if groq_api_key:
+            os.environ["GROQ_API_KEY"] = groq_api_key
+            st.success("GROQ API key saved!")
         
     st.markdown("---")
     st.markdown("### About")
@@ -126,8 +130,10 @@ if submitted:
             # Set up LLM
             llm_deepseek = LLM(
                 model="groq/deepseek-r1-distill-llama-70b",
-                api_key="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"
+                temperature=0
             )
+            if "GROQ_API_KEY" in os.environ and os.environ["GROQ_API_KEY"]:
+                llm_deepseek.api_key = os.environ["GROQ_API_KEY"]
             
             # Create agent
             compliance_agent = Agent(
@@ -184,8 +190,7 @@ if submitted:
                     "- Do not omit entries — even inapplicable ones must be recorded."
                     "- The report generated should be beautifully presented."
                 ),
-                agent=compliance_agent,
-                output_file="compliance.md"
+                agent=compliance_agent
             )
             
             # Create and run crew
@@ -198,19 +203,30 @@ if submitted:
             # Format the date as DD-MM-YYYY
             formatted_date = reference_date.strftime("%d-%m-%Y")
             
-            # Run the crew
+            # Run the crew and extract the actual text content
             result = crew.kickoff({"data": compliance_answers, "date": formatted_date})
+            
+            # Convert CrewOutput to string - this is the key fix
+            if hasattr(result, 'raw'):
+                result_text = result.raw
+            elif hasattr(result, 'result'):
+                result_text = result.result
+            elif hasattr(result, '__str__'):
+                result_text = str(result)
+            else:
+                # Last resort - try to convert to string
+                result_text = f"{result}"
             
             # Display the result
             st.markdown("<div class='report-container'>", unsafe_allow_html=True)
             st.markdown("## Your Compliance Report")
-            st.markdown(result)
+            st.markdown(result_text)
             st.markdown("</div>", unsafe_allow_html=True)
             
             # Download button for the report
             st.download_button(
                 label="Download Compliance Report",
-                data=result,
+                data=result_text,
                 file_name="compliance_report.md",
                 mime="text/markdown",
                 use_container_width=True
@@ -218,6 +234,10 @@ if submitted:
             
         except Exception as e:
             st.error(f"An error occurred: {str(e)}")
+            st.info("Debugging information:")
+            st.info(f"OpenAI API Key set: {'Yes' if os.environ.get('OPENAI_API_KEY') else 'No'}")
+            st.info(f"Serper API Key set: {'Yes' if os.environ.get('SERPER_API_KEY') else 'No'}")
+            st.info(f"GROQ API Key set: {'Yes' if os.environ.get('GROQ_API_KEY') else 'No'}")
             st.error("Please check your API keys and try again.")
 
 # Footer
