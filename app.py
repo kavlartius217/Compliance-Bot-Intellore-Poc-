@@ -60,7 +60,6 @@ with st.sidebar:
     st.header("API Configuration")
     openai_api_key = st.text_input("OpenAI API Key", type="password", value=os.environ.get("OPENAI_API_KEY", ""))
     serper_api_key = st.text_input("Serper API Key", type="password", value=os.environ.get("SERPER_API_KEY", ""))
-    groq_api_key = st.text_input("Groq API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
     
     if st.button("Save API Keys"):
         if openai_api_key:
@@ -69,9 +68,6 @@ with st.sidebar:
         if serper_api_key:
             os.environ["SERPER_API_KEY"] = serper_api_key
             st.success("Serper API key saved!")
-        if serper_api_key:
-            os.environ["GROQ_API_KEY"] = groq_api_key
-            st.success("Groq API key saved!")
         
     st.markdown("---")
     st.markdown("### About")
@@ -130,7 +126,7 @@ if submitted:
             # Set up LLM
             llm_deepseek = LLM(
                 model="groq/deepseek-r1-distill-llama-70b",
-                api_key=groq_api_key if groq_api_key else "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"
+                api_key="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"
             )
             
             # Create agent
