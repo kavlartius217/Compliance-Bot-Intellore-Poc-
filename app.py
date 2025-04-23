@@ -129,7 +129,7 @@ if submitted:
             
             # Set up LLM
             llm_deepseek = LLM(
-                model="groq/mistral-saba-24b",
+                model="groq/llama3-70b-8192",
                 temperature=0.3
             )
             if "GROQ_API_KEY" in os.environ and os.environ["GROQ_API_KEY"]:
