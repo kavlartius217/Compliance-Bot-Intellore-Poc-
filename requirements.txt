@@ -1,7 +1,7 @@
-streamlit>=1.24.0
-pandas>=1.5.0
-crewai>=0.28.0
-crewai-tools>=0.1.6
-groq>=0.4.0
-pysqlite3-binary==0.5.1
+streamlit
+pandas
+crewai>
+crewai-tools
+groq
+pysqlite3-binary
 setuptools>=65.5.0
