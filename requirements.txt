@@ -1,29 +1,5 @@
-# requirements.txt
-
-# Core web framework
 streamlit
-
-# Data manipulation (imported, potentially useful)
 pandas
-
-# LangChain integration for Groq LLMs
-langchain-groq
-
-# LangChain core components (often pulled by integrations, but explicit can be safer)
-# langchain # Usually installed as dependency
-# langchain-core # Usually installed as dependency
-
-# CrewAI framework
 crewai
-
-# CrewAI tools, specifically SerperDevTool used here
 crewai-tools
-
-# --- Optional LLM Dependencies (Based on commented-out code in app.py) ---
-# Uncomment if you plan to use OpenAI models with CrewAI/LangChain
-langchain-openai
-
-# Uncomment if you plan to use Google Generative AI (Gemini) models with CrewAI/LangChain
-langchain-google-genai
-
-pysqlite3-binary
+groq
