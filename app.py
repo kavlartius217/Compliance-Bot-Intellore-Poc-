@@ -60,7 +60,7 @@ with st.sidebar:
     st.header("API Configuration")
     openai_api_key = st.text_input("OpenAI API Key", type="password", value=os.environ.get("OPENAI_API_KEY", ""))
     serper_api_key = st.text_input("Serper API Key", type="password", value=os.environ.get("SERPER_API_KEY", ""))
-    groq_api_key = st.text_input("Groq API Key", type="password", value="")
+    groq_api_key = st.text_input("Groq API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
     
     if st.button("Save API Keys"):
         if openai_api_key:
