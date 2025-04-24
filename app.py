@@ -60,7 +60,6 @@ with st.sidebar:
     st.header("API Configuration")
     openai_api_key = st.text_input("OpenAI API Key", type="password", value=os.environ.get("OPENAI_API_KEY", ""))
     serper_api_key = st.text_input("Serper API Key", type="password", value=os.environ.get("SERPER_API_KEY", ""))
-    groq_api_key = st.text_input("GROQ API Key", type="password", value=os.environ.get("GROQ_API_KEY", ""))
     
     if st.button("Save API Keys"):
         if openai_api_key:
@@ -126,10 +125,7 @@ if submitted:
             
             # Set up LLM
             llm_deepseek=LLM(model="openrouter/deepseek/deepseek-r1",
-                 base_url="https://openrouter.ai/api/v1",api_key="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",temperature=0.4)
-
-            if "GROQ_API_KEY" in os.environ and os.environ["GROQ_API_KEY"]:
-                llm_deepseek.api_key = os.environ["GROQ_API_KEY"]
+                 base_url="https://openrouter.ai/api/v1",api_key="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",temperature=0.3)
             
             # Create agent
             compliance_agent = Agent(
