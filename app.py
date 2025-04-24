@@ -69,9 +69,6 @@ with st.sidebar:
         if serper_api_key:
             os.environ["SERPER_API_KEY"] = serper_api_key
             st.success("Serper API key saved!")
-        if groq_api_key:
-            os.environ["GROQ_API_KEY"] = groq_api_key
-            st.success("GROQ API key saved!")
         
     st.markdown("---")
     st.markdown("### About")
@@ -128,10 +125,9 @@ if submitted:
             search_tool = SerperDevTool()
             
             # Set up LLM
-            llm_deepseek = LLM(
-                model="groq/llama-3.3-70b-versatile",
-                temperature=0.5
-            )
+            llm_deepseek=LLM(model="openrouter/deepseek/deepseek-r1",
+                 base_url="https://openrouter.ai/api/v1",api_key="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",temperature=0.4)
+
             if "GROQ_API_KEY" in os.environ and os.environ["GROQ_API_KEY"]:
                 llm_deepseek.api_key = os.environ["GROQ_API_KEY"]
             
@@ -237,7 +233,6 @@ if submitted:
             st.info("Debugging information:")
             st.info(f"OpenAI API Key set: {'Yes' if os.environ.get('OPENAI_API_KEY') else 'No'}")
             st.info(f"Serper API Key set: {'Yes' if os.environ.get('SERPER_API_KEY') else 'No'}")
-            st.info(f"GROQ API Key set: {'Yes' if os.environ.get('GROQ_API_KEY') else 'No'}")
             st.error("Please check your API keys and try again.")
 
 # Footer
