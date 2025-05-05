@@ -60,7 +60,6 @@ with st.sidebar:
     st.header("API Configuration")
     openai_api_key = st.text_input("OpenAI API Key", type="password", value=os.environ.get("OPENAI_API_KEY", ""))
     serper_api_key = st.text_input("Serper API Key", type="password", value=os.environ.get("SERPER_API_KEY", ""))
-    open_router_api_key=st.text_input("Open Router API Key", type="password", value=os.environ.get("OPENROUTER_API_KEY", ""))
     
     if st.button("Save API Keys"):
         if openai_api_key:
@@ -69,9 +68,6 @@ with st.sidebar:
         if serper_api_key:
             os.environ["SERPER_API_KEY"] = serper_api_key
             st.success("Serper API key saved!")
-        if open_router_api_key:
-            os.environ["OPENROUTER_API_KEY"] = open_router_api_key
-            st.success("Open Router API key saved!")
         
     st.markdown("---")
     st.markdown("### About")
@@ -128,8 +124,7 @@ if submitted:
             search_tool = SerperDevTool()
             
             # Set up LLM
-            llm_deepseek=LLM(model="openrouter/deepseek/deepseek-r1",
-                 base_url="https://openrouter.ai/api/v1",api_key=open_router_api_key,temperature=0.3)
+            llm=LLM(model="openai/gpt-4o-mini",temperature=0.3)
             
             # Create agent
             compliance_agent = Agent(
@@ -142,7 +137,7 @@ if submitted:
                     "You use search tools to find relevant thresholds, forms, and deadlines, and present your findings in a clear, tabular markdown report "
                     "suitable for audit or legal review."
                 ),
-                llm=llm_deepseek,
+                llm=llm,
                 tools=[search_tool],
                 memory=True,
                 verbose=True
